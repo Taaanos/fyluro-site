@@ -102,6 +102,8 @@
       </article>
       {% endfor %}
     </div>
+
+    {% include "tool/state-machine.html" %}
   </div>
 </section>
 
@@ -128,4 +130,5 @@
 {% block tool_scripts %}
   <script src="/tool/accent-preview.js" defer></script>
   <script src="/tool/mycelium.js" defer></script>
+  <script src="/tool/state-machine.js" defer></script>
 {% endblock tool_scripts %}

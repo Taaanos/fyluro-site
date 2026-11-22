@@ -1,0 +1,181 @@
+<details class="sm-disclosure" id="ingest-state-machine">
+  <summary class="sm-summary">
+    <div class="sm-summary-copy">
+      <span class="sm-summary-title">Inspect the ingest state machine</span>
+      <span class="sm-summary-subtitle">Click any state to inspect disk writes, failure paths, and invariants.</span>
+    </div>
+    <span class="sm-summary-chevron" aria-hidden="true">
+      <svg viewBox="0 0 16 16" width="16" height="16" fill="none">
+        <path d="M4 6l4 4 4-4" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </span>
+  </summary>
+
+  <div class="sm-panel" data-state-machine>
+    <div class="sm-toolbar">
+      <span class="sm-hint">Select a state node to inspect its rules.</span>
+      <div class="sm-legend" aria-hidden="true">
+        <span class="sm-legend-item"><span class="sm-legend-swatch sm-legend-main"></span>Main flow</span>
+        <span class="sm-legend-item"><span class="sm-legend-swatch sm-legend-dry"></span>Dry run</span>
+        <span class="sm-legend-item"><span class="sm-legend-swatch sm-legend-abort"></span>Stop / error</span>
+      </div>
+    </div>
+
+    <div class="sm-canvas" role="region" aria-label="Fyluro ingest state machine diagram">
+      <svg
+        class="sm-svg"
+        viewBox="0 0 960 334"
+        xmlns="http://www.w3.org/2000/svg"
+        role="img"
+        aria-label="Fyluro ingest state machine: Preflight, Scan, Plan, Copy, Verify, Commit, Finalize, with Dry Run, Rejected, and Aborted paths"
+      >
+        <defs>
+          <marker id="sm-arrow-default" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0.5 1L7 4L0.5 7z" class="sm-marker-default" />
+          </marker>
+          <marker id="sm-arrow-accent" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0.5 1L7 4L0.5 7z" class="sm-marker-accent" />
+          </marker>
+          <marker id="sm-arrow-abort" viewBox="0 0 8 8" refX="6.5" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M0.5 1L7 4L0.5 7z" class="sm-marker-abort" />
+          </marker>
+        </defs>
+
+        <!-- Main flow transitions -->
+        <g class="sm-edges">
+          <path class="sm-edge sm-edge-main" data-from="preflight" data-to="scan" d="M 125 136 L 145 136" marker-end="url(#sm-arrow-default)" />
+          <path class="sm-edge sm-edge-main" data-from="scan" data-to="plan" d="M 262 136 L 282 136" marker-end="url(#sm-arrow-default)" />
+          <path class="sm-edge sm-edge-main" data-from="plan" data-to="copy" d="M 399 136 L 419 136" marker-end="url(#sm-arrow-default)" />
+          <path class="sm-edge sm-edge-main" data-from="copy" data-to="verify" d="M 536 136 L 556 136" marker-end="url(#sm-arrow-default)" />
+          <path class="sm-edge sm-edge-main" data-from="verify" data-to="commit" d="M 673 136 L 693 136" marker-end="url(#sm-arrow-default)" />
+          <path class="sm-edge sm-edge-main" data-from="commit" data-to="finalize" d="M 810 136 L 830 136" marker-end="url(#sm-arrow-default)" />
+
+          <!-- Dry run branch -->
+          <path class="sm-edge sm-edge-dry" data-from="plan" data-to="dry-run" d="M 343 104 L 343 47 Q 343 39 351 39 L 419 39" marker-end="url(#sm-arrow-default)" />
+          <text class="sm-edge-label" data-edge-label="plan:dry-run" x="344" y="30">dry-run mode</text>
+
+          <!-- Failure / cancel transitions -->
+          <path class="sm-edge sm-edge-abort" data-from="preflight" data-to="rejected" d="M 69 168 L 69 211" marker-end="url(#sm-arrow-default)" />
+          <text class="sm-edge-label" data-edge-label="preflight:rejected" x="77" y="195">overlap / no sink</text>
+
+          <path class="sm-edge sm-edge-abort" data-from="scan" data-to="aborted-pre" d="M 206 168 L 206 184 Q 206 192 214 192 L 368 192 Q 376 192 376 200 L 376 211" marker-end="url(#sm-arrow-default)" />
+          <text class="sm-edge-label" data-edge-label="scan:aborted-pre" x="215" y="185">unreadable root</text>
+
+          <path class="sm-edge sm-edge-abort" data-from="copy" data-to="aborted-pre" d="M 480 168 L 480 211" marker-end="url(#sm-arrow-default)" />
+          <text class="sm-edge-label" data-edge-label="copy:aborted-pre" x="472" y="195" text-anchor="end">error / cancel</text>
+
+          <path class="sm-edge sm-edge-abort" data-from="verify" data-to="aborted-pre" d="M 617 168 L 617 211" marker-end="url(#sm-arrow-default)" />
+          <text class="sm-edge-label" data-edge-label="verify:aborted-pre" x="625" y="195">mismatch / cancel</text>
+
+          <path class="sm-edge sm-edge-abort" data-from="commit" data-to="aborted-commit" d="M 754 168 L 754 211" marker-end="url(#sm-arrow-default)" />
+          <text class="sm-edge-label" data-edge-label="commit:aborted-commit" x="762" y="195">error / cancel</text>
+        </g>
+
+        <!-- Dry run node -->
+        <g class="sm-node sm-node-branch" data-state="dry-run" role="button" tabindex="0" aria-pressed="false" aria-label="Dry Run: Receipt only, not VERIFIED">
+          <rect x="424" y="14" width="212" height="50" rx="10" />
+          <text class="sm-node-title" x="530" y="35" text-anchor="middle">Dry Run</text>
+          <text class="sm-node-sub" x="530" y="52" text-anchor="middle">Receipt only · not VERIFIED</text>
+        </g>
+
+        <!-- Main pipeline nodes -->
+        <g class="sm-node sm-node-main is-active" data-state="preflight" role="button" tabindex="0" aria-pressed="true" aria-label="Preflight: Overlap check and receipt sink">
+          <rect x="13" y="104" width="112" height="64" rx="10" />
+          <text class="sm-node-title" x="69" y="131" text-anchor="middle">Preflight</text>
+          <text class="sm-node-sub" x="69" y="149" text-anchor="middle">Overlap &amp; sink</text>
+        </g>
+
+        <g class="sm-node sm-node-main" data-state="scan" role="button" tabindex="0" aria-pressed="false" aria-label="1. Scan: Read-only card inventory">
+          <rect x="150" y="104" width="112" height="64" rx="10" />
+          <text class="sm-node-title" x="206" y="131" text-anchor="middle">1. Scan</text>
+          <text class="sm-node-sub" x="206" y="149" text-anchor="middle">Read-only card</text>
+        </g>
+
+        <g class="sm-node sm-node-main" data-state="plan" role="button" tabindex="0" aria-pressed="false" aria-label="2. Plan: Destination paths and duplicates">
+          <rect x="287" y="104" width="112" height="64" rx="10" />
+          <text class="sm-node-title" x="343" y="131" text-anchor="middle">2. Plan</text>
+          <text class="sm-node-sub" x="343" y="149" text-anchor="middle">Paths &amp; dupes</text>
+        </g>
+
+        <g class="sm-node sm-node-main" data-state="copy" role="button" tabindex="0" aria-pressed="false" aria-label="3. Copy: Stream to staging with SHA-256">
+          <rect x="424" y="104" width="112" height="64" rx="10" />
+          <text class="sm-node-title" x="480" y="131" text-anchor="middle">3. Copy</text>
+          <text class="sm-node-sub" x="480" y="149" text-anchor="middle">Stage + SHA-256</text>
+        </g>
+
+        <g class="sm-node sm-node-main" data-state="verify" role="button" tabindex="0" aria-pressed="false" aria-label="4. Verify: Read-back SHA-256 verification">
+          <rect x="561" y="104" width="112" height="64" rx="10" />
+          <text class="sm-node-title" x="617" y="131" text-anchor="middle">4. Verify</text>
+          <text class="sm-node-sub" x="617" y="149" text-anchor="middle">Read-back hash</text>
+        </g>
+
+        <g class="sm-node sm-node-main" data-state="commit" role="button" tabindex="0" aria-pressed="false" aria-label="5. Commit: Non-overwriting move to library">
+          <rect x="698" y="104" width="112" height="64" rx="10" />
+          <text class="sm-node-title" x="754" y="131" text-anchor="middle">5. Commit</text>
+          <text class="sm-node-sub" x="754" y="149" text-anchor="middle">Safe move</text>
+        </g>
+
+        <g class="sm-node sm-node-verified" data-state="finalize" role="button" tabindex="0" aria-pressed="false" aria-label="6. Finalize: VERIFIED and staging cleanup">
+          <rect x="835" y="104" width="112" height="64" rx="10" />
+          <text class="sm-node-title" x="891" y="131" text-anchor="middle">6. Finalize</text>
+          <text class="sm-node-sub sm-node-sub-verified" x="891" y="149" text-anchor="middle">VERIFIED</text>
+        </g>
+
+        <!-- Failure / abort outcome nodes -->
+        <g class="sm-node sm-node-abort" data-state="rejected" role="button" tabindex="0" aria-pressed="false" aria-label="Rejected: Zero writes before session start">
+          <rect x="13" y="216" width="132" height="56" rx="10" />
+          <text class="sm-node-title" x="79" y="240" text-anchor="middle">Rejected</text>
+          <text class="sm-node-sub" x="79" y="257" text-anchor="middle">Zero writes</text>
+        </g>
+
+        <g class="sm-node sm-node-abort" data-state="aborted-pre" role="button" tabindex="0" aria-pressed="false" aria-label="Aborted before commit: Library untouched, staging and receipt kept">
+          <rect x="326" y="216" width="318" height="56" rx="10" />
+          <text class="sm-node-title" x="485" y="240" text-anchor="middle">Aborted (Library Untouched)</text>
+          <text class="sm-node-sub" x="485" y="257" text-anchor="middle">0 committed · staging &amp; receipt kept</text>
+        </g>
+
+        <g class="sm-node sm-node-abort" data-state="aborted-commit" role="button" tabindex="0" aria-pressed="false" aria-label="Aborted during commit: Partial commit, committed files and staging kept">
+          <rect x="678" y="216" width="269" height="56" rx="10" />
+          <text class="sm-node-title" x="812.5" y="240" text-anchor="middle">Aborted (Partial Commit)</text>
+          <text class="sm-node-sub" x="812.5" y="257" text-anchor="middle">Committed kept · rest in staging</text>
+        </g>
+
+        <!-- Always-on cross-cutting invariants rail -->
+        <g class="sm-rail" aria-hidden="true">
+          <rect x="13" y="294" width="934" height="28" rx="8" />
+          <text class="sm-rail-text" x="27" y="312">I-1  Source card stays read-only</text>
+          <text class="sm-rail-text" x="933" y="312" text-anchor="end">I-6  Append-only receipt logs every phase (local temp failover)</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="sm-inspector" aria-live="polite" data-sm-inspector>
+      <div class="sm-inspector-head">
+        <h3 class="sm-inspector-title" data-sm-title>Preflight</h3>
+        <span class="sm-phase-pill" data-sm-kind="gate" data-sm-pill>Entry gate</span>
+      </div>
+      <p class="sm-inspector-summary" data-sm-summary>Checks that source and destination do not overlap and opens the receipt file before the session starts.</p>
+
+      <div class="sm-inspector-grid">
+        <div class="sm-fact">
+          <span class="sm-fact-label">What happens</span>
+          <p class="sm-fact-text" data-sm-happens>Resolves paths to reject nested or equal source and destination folders. Locks the path strategy and run settings at session start.</p>
+        </div>
+        <div class="sm-fact">
+          <span class="sm-fact-label">Disk writes</span>
+          <p class="sm-fact-text" data-sm-writes>Zero writes if rejected. Opens the append-only NDJSON receipt in destination receipts (or local temp fallback) on start.</p>
+        </div>
+        <div class="sm-fact">
+          <span class="sm-fact-label">Failure or exit</span>
+          <p class="sm-fact-text" data-sm-failure>If folders overlap or no receipt sink can open, the run stops before session start with zero changes on disk.</p>
+        </div>
+      </div>
+
+      <div class="sm-invariants" data-sm-invariants>
+        <span class="sm-inv-chip">I-6 Receipt always written</span>
+        <span class="sm-inv-chip">I-9 Allowed write paths only</span>
+        <span class="sm-inv-chip">I-10 Path strategy locked</span>
+      </div>
+    </div>
+  </div>
+</details>
