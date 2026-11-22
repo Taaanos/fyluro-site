@@ -1,0 +1,10 @@
+base_url = "https://fyluro.thanosam.com"
+title = "Fyluro"
+description = "Safe, verified media ingest for macOS."
+compile_sass = false
+build_search_index = false
+
+[extra]
+tool_name = "Fyluro"
+github_url = "https://github.com/taaanos/fyluro"
+hub_url = "https://thanosam.com"
