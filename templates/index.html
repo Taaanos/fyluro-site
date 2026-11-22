@@ -11,6 +11,10 @@
 </script>
 {% endblock head_extra %}
 
+{% block background %}
+  {% include "tool/background.html" %}
+{% endblock background %}
+
 {% block tool_bar %}
   {% include "tool/accent-preview.html" %}
 {% endblock tool_bar %}
@@ -123,4 +127,5 @@
 
 {% block tool_scripts %}
   <script src="/tool/accent-preview.js" defer></script>
+  <script src="/tool/mycelium.js" defer></script>
 {% endblock tool_scripts %}

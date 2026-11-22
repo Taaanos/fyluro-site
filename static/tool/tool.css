@@ -33,6 +33,8 @@
 /* Ephemeral accent preview switcher (remove once final accent is picked). */
 
 .accent-preview-bar {
+  position: relative;
+  z-index: 2;
   border-bottom: 1px solid var(--border);
   background-color: var(--bg-subtle);
   padding-block: var(--space-2);
@@ -129,4 +131,88 @@
   .fyluro-mascot-svg .mascot-tail {
     animation: none;
   }
+
+  .mycelium-pulses {
+    display: none;
+  }
+}
+
+/* Fyluro modular active background (trunks + mycorrhizal network). */
+
+.mycelium-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: var(--text);
+}
+
+.mycelium-trunk {
+  fill: url(#mycelium-trunk-grad);
+  opacity: 0.045;
+}
+
+.mycelium-bark {
+  fill: none;
+  stroke: var(--text-subtle);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  opacity: 0.09;
+}
+
+.mycelium-root-primary {
+  fill: none;
+  stroke: var(--text-subtle);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+  opacity: 0.14;
+}
+
+.mycelium-root-secondary {
+  fill: none;
+  stroke: var(--text-subtle);
+  stroke-width: 0.9;
+  stroke-linecap: round;
+  opacity: 0.1;
+}
+
+.mycelium-hypha {
+  fill: none;
+  stroke: var(--text-subtle);
+  stroke-width: 0.7;
+  stroke-dasharray: 2.5 4.5;
+  opacity: 0.08;
+}
+
+.mycelium-route-guide {
+  fill: none;
+  stroke: none;
+}
+
+.mycelium-node-dot {
+  fill: var(--text-subtle);
+  opacity: 0.22;
+}
+
+.mycelium-node-ring {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.1;
+}
+
+.mycelium-pulse-streak {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.75;
+  stroke-linecap: round;
+  opacity: 0.45;
+}
+
+.mycelium-pulse-halo {
+  fill: var(--accent);
+  opacity: 0.22;
+}
+
+.mycelium-pulse-head {
+  fill: var(--accent);
+  opacity: 0.8;
 }
