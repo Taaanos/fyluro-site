@@ -11,7 +11,9 @@
 
   const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-  // Deterministic PRNG (Mulberry32) so the forest stays reproducible.
+  // Deterministic PRNG (Mulberry32) seeded once per page load so resizes stay stable.
+  const pageSeed = (Date.now() ^ Math.floor(Math.random() * 0x100000000)) >>> 0;
+
   function mulberry32(seed) {
     let a = seed >>> 0;
     return function () {
@@ -284,7 +286,7 @@
     svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
     svg.replaceChildren();
 
-    const rand = mulberry32(93177);
+    const rand = mulberry32(pageSeed);
     const isCompact = W < 820;
     const obstacles = collectObstacles(host);
 
