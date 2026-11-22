@@ -65,3 +65,68 @@
 .accent-swatch-amber { background-color: light-dark(#b45309, #f59e0b); }
 .accent-swatch-terracotta { background-color: light-dark(#b84a32, #e07a5f); }
 .accent-swatch-slate { background-color: light-dark(#3b5b7c, #7da2c8); }
+
+/* Fyluro animated mascot icon (idle eye blink + quiet tail breathe). */
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.hero-mascot-frame {
+  display: inline-flex;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  background-color: #0a0a0a;
+  flex-shrink: 0;
+  transition: transform 200ms ease;
+}
+
+.hero-mascot-frame:hover {
+  transform: translateY(-2px) rotate(-2deg);
+}
+
+.hero-mascot-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes mascot-blink {
+  0%, 92%, 100% { transform: scaleY(1); }
+  95%, 97% { transform: scaleY(0.08); }
+}
+
+@keyframes mascot-tail {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-1.5deg); }
+}
+
+.fyluro-mascot-svg .mascot-eye {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: mascot-blink 4.6s ease-in-out infinite;
+}
+
+.fyluro-mascot-svg .mascot-tail {
+  transform-box: fill-box;
+  transform-origin: 75% 88%;
+  animation: mascot-tail 3.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-mascot-frame {
+    transition: none;
+  }
+
+  .fyluro-mascot-svg .mascot-eye,
+  .fyluro-mascot-svg .mascot-tail {
+    animation: none;
+  }
+}

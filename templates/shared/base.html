@@ -27,11 +27,13 @@
   <header class="site-header">
     <div class="container site-header-inner">
       <a class="brand" href="/">
-        {% if config.extra.icon %}
-          <img class="brand-icon" src="{{ config.extra.icon }}" alt="" width="24" height="24" />
-        {% else %}
-          <span class="brand-mark" aria-hidden="true"></span>
-        {% endif %}
+        {% block brand_mark %}
+          {% if config.extra.icon %}
+            <img class="brand-icon" src="{{ config.extra.icon }}" alt="" width="24" height="24" />
+          {% else %}
+            <span class="brand-mark" aria-hidden="true"></span>
+          {% endif %}
+        {% endblock brand_mark %}
         <span>{{ config.extra.tool_name }}</span>
       </a>
 

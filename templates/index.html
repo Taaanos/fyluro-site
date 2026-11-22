@@ -15,11 +15,26 @@
   {% include "tool/accent-preview.html" %}
 {% endblock tool_bar %}
 
+{% block brand_mark %}
+  {% set icon_id = "header" %}
+  {% set icon_class = "brand-icon" %}
+  {% set icon_decorative = true %}
+  {% include "tool/mascot-icon.html" %}
+{% endblock brand_mark %}
+
 {% block content %}
 <section class="section section-hero">
   <div class="container hero-grid">
     <div class="hero-copy stack">
-      <span class="badge">{{ section.extra.hero.meta }}</span>
+      <div class="hero-eyebrow">
+        <span class="hero-mascot-frame">
+          {% set icon_id = "hero" %}
+          {% set icon_class = "hero-mascot-svg" %}
+          {% set icon_decorative = false %}
+          {% include "tool/mascot-icon.html" %}
+        </span>
+        <span class="badge">{{ section.extra.hero.meta }}</span>
+      </div>
       <h1>{{ section.extra.hero.headline }}</h1>
       <p class="hero-subheadline">{{ section.extra.hero.subheadline }}</p>
 
