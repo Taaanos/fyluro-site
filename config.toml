@@ -6,5 +6,6 @@ build_search_index = false
 
 [extra]
 tool_name = "Fyluro"
+accent = "forest"
 github_url = "https://github.com/taaanos/fyluro"
 hub_url = "https://thanosam.com"

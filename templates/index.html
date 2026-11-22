@@ -1,8 +1,64 @@
 {% extends "shared/base.html" %}
 
+{% block head_extra %}
+<script>
+  try {
+    var a = localStorage.getItem("fyluro-accent-preview");
+    if (a === "forest" || a === "amber" || a === "terracotta" || a === "slate") {
+      document.documentElement.setAttribute("data-accent", a);
+    }
+  } catch (e) {}
+</script>
+{% endblock head_extra %}
+
+{% block tool_bar %}
+  {% include "tool/accent-preview.html" %}
+{% endblock tool_bar %}
+
 {% block content %}
-<main>
-  <h1>{{ section.title }}</h1>
-  <p>Starter page for {{ config.extra.tool_name }}.</p>
-</main>
+<section class="section">
+  <div class="container stack">
+    <span class="badge">{{ section.extra.hero.meta }}</span>
+    <h1>{{ section.extra.hero.headline }}</h1>
+    <p style="max-width: 65ch;">{{ section.extra.hero.subheadline }}</p>
+
+    <div class="row">
+      <a class="btn btn-primary" href="{{ section.extra.hero.primary_cta_url }}">
+        {{ section.extra.hero.primary_cta_label }}
+      </a>
+      <a class="btn btn-secondary" href="{{ config.extra.github_url }}">View source on GitHub</a>
+      <button type="button" class="btn btn-ghost">Ghost action</button>
+    </div>
+
+    <div>
+      <div class="cmd-block">
+        <code class="cmd-text"><span class="cmd-prompt">$</span>{{ section.extra.hero.homebrew_command }}</code>
+        <button type="button" class="cmd-copy" disabled>Copy (Story 4)</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>Reusable card component preview</h2>
+      <p>Switch themes in the header and accent colors in the preview bar above.</p>
+    </div>
+
+    <div class="grid grid-3">
+      {% for item in section.extra.problem.items %}
+      <article class="card">
+        <span class="card-kicker">0{{ loop.index }}</span>
+        <h3 class="card-title">{{ item.title }}</h3>
+        <p class="card-body">{{ item.body }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
 {% endblock content %}
+
+{% block tool_scripts %}
+  <script src="/tool/accent-preview.js" defer></script>
+{% endblock tool_scripts %}
