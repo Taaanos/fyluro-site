@@ -16,25 +16,37 @@
 {% endblock tool_bar %}
 
 {% block content %}
-<section class="section">
-  <div class="container stack">
-    <span class="badge">{{ section.extra.hero.meta }}</span>
-    <h1>{{ section.extra.hero.headline }}</h1>
-    <p style="max-width: 65ch;">{{ section.extra.hero.subheadline }}</p>
+<section class="section section-hero">
+  <div class="container hero-grid">
+    <div class="hero-copy stack">
+      <span class="badge">{{ section.extra.hero.meta }}</span>
+      <h1>{{ section.extra.hero.headline }}</h1>
+      <p class="hero-subheadline">{{ section.extra.hero.subheadline }}</p>
 
-    <div class="row">
-      <a class="btn btn-primary" href="{{ section.extra.hero.primary_cta_url }}">
-        {{ section.extra.hero.primary_cta_label }}
-      </a>
-      <a class="btn btn-secondary" href="{{ config.extra.github_url }}">View source on GitHub</a>
-      <button type="button" class="btn btn-ghost">Ghost action</button>
-    </div>
+      <div class="row">
+        <a class="btn btn-primary" href="{{ section.extra.hero.primary_cta_url }}">
+          {{ section.extra.hero.primary_cta_label }}
+        </a>
+        <a class="btn btn-secondary" href="{{ config.extra.github_url }}">View source on GitHub</a>
+      </div>
 
-    <div>
       <div class="cmd-block">
         <code class="cmd-text"><span class="cmd-prompt">$</span>{{ section.extra.hero.homebrew_command }}</code>
-        <button type="button" class="cmd-copy" disabled>Copy (Story 4)</button>
+        <button
+          type="button"
+          class="cmd-copy"
+          data-copy-text="{{ section.extra.hero.homebrew_command }}"
+          aria-label="Copy Homebrew install command"
+        >Copy</button>
       </div>
+    </div>
+
+    <div class="hero-media">
+      <img
+        class="app-screenshot"
+        src="/tool/app-screenshot.png"
+        alt="Fyluro macOS app window showing source card scan preview, detected cameras, and import action"
+      />
     </div>
   </div>
 </section>
@@ -42,14 +54,47 @@
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <h2>Reusable card component preview</h2>
-      <p>Switch themes in the header and accent colors in the preview bar above.</p>
+      <h2>{{ section.extra.problem.title }}</h2>
     </div>
 
     <div class="grid grid-3">
       {% for item in section.extra.problem.items %}
       <article class="card">
+        <h3 class="card-title">{{ item.title }}</h3>
+        <p class="card-body">{{ item.body }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ section.extra.how_it_works.title }}</h2>
+    </div>
+
+    <div class="grid grid-2">
+      {% for step in section.extra.how_it_works.steps %}
+      <article class="card">
         <span class="card-kicker">0{{ loop.index }}</span>
+        <h3 class="card-title">{{ step.title }}</h3>
+        <p class="card-body">{{ step.body }}</p>
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <h2>{{ section.extra.guarantees.title }}</h2>
+    </div>
+
+    <div class="grid grid-3">
+      {% for item in section.extra.guarantees.items %}
+      <article class="card">
         <h3 class="card-title">{{ item.title }}</h3>
         <p class="card-body">{{ item.body }}</p>
       </article>
@@ -58,6 +103,8 @@
   </div>
 </section>
 {% endblock content %}
+
+{% block footer_note %}{{ section.extra.footer.note }}{% endblock footer_note %}
 
 {% block tool_scripts %}
   <script src="/tool/accent-preview.js" defer></script>

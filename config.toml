@@ -7,5 +7,7 @@ build_search_index = false
 [extra]
 tool_name = "Fyluro"
 accent = "forest"
+icon = "/tool/app-icon.png"
 github_url = "https://github.com/taaanos/fyluro"
 hub_url = "https://thanosam.com"
+docs_label = "Docs (Coming soon)"

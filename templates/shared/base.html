@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}{{ config.title }}{% endblock title %}</title>
   <meta name="description" content="{{ config.description }}" />
+  {% if config.extra.icon %}
+  <link rel="icon" type="image/png" href="{{ config.extra.icon }}" />
+  {% endif %}
   <script>
     try {
       var t = localStorage.getItem("site-theme");
@@ -24,7 +27,11 @@
   <header class="site-header">
     <div class="container site-header-inner">
       <a class="brand" href="/">
-        <span class="brand-mark" aria-hidden="true"></span>
+        {% if config.extra.icon %}
+          <img class="brand-icon" src="{{ config.extra.icon }}" alt="" width="24" height="24" />
+        {% else %}
+          <span class="brand-mark" aria-hidden="true"></span>
+        {% endif %}
         <span>{{ config.extra.tool_name }}</span>
       </a>
 
@@ -46,15 +53,19 @@
 
   <footer class="site-footer">
     <div class="container site-footer-inner">
-      <span>{{ config.extra.tool_name }} — {{ config.description }}</span>
+      <span>{% block footer_note %}{{ config.extra.tool_name }} — {{ config.description }}{% endblock footer_note %}</span>
       <div class="footer-links">
         <a href="{{ config.extra.github_url }}">GitHub</a>
+        {% if config.extra.docs_label %}
+          <span class="footer-muted">{{ config.extra.docs_label }}</span>
+        {% endif %}
         <a href="{{ config.extra.hub_url }}">thanosam.com</a>
       </div>
     </div>
   </footer>
 
   <script src="/shared/theme.js" defer></script>
+  <script src="/shared/copy.js" defer></script>
   {% block tool_scripts %}{% endblock tool_scripts %}
 </body>
 </html>
