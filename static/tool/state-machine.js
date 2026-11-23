@@ -54,7 +54,7 @@
       pill: "Main pipeline",
       kind: "main",
       summary:
-        "Streams all planned files into staging while computing SHA-256 checksums, then flushes the drive write cache.",
+        "Streams all planned files into staging while computing checksums, then flushes the drive write cache.",
       happens:
         "Checks free space first. Copies each file to a hidden .tmp name with F_NOCACHE, renames to staging, then runs one F_FULLFSYNC / fsync barrier.",
       writes:
@@ -73,7 +73,7 @@
       pill: "Main pipeline",
       kind: "main",
       summary:
-        "Re-reads every staged file back from disk (bypassing OS page cache) and checks both SHA-256 hash and byte size.",
+        "Re-reads every staged file back from disk (bypassing OS page cache) and checks both checksum and byte size.",
       happens:
         "Opens each staged file with F_NOCACHE so bytes come from storage media, not RAM. Every file must pass before the first commit starts.",
       writes:

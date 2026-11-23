@@ -73,11 +73,11 @@
 <section class="section">
   <div class="container">
     <div class="section-header">
-      <h2>{{ section.extra.problem.title }}</h2>
+      <h2>{{ section.extra.guarantees.title }}</h2>
     </div>
 
     <div class="grid grid-3">
-      {% for item in section.extra.problem.items %}
+      {% for item in section.extra.guarantees.items %}
       <article class="card">
         <h3 class="card-title">{{ item.title }}</h3>
         <p class="card-body">{{ item.body }}</p>
@@ -104,23 +104,6 @@
     </div>
 
     {% include "tool/state-machine.html" %}
-  </div>
-</section>
-
-<section class="section">
-  <div class="container">
-    <div class="section-header">
-      <h2>{{ section.extra.guarantees.title }}</h2>
-    </div>
-
-    <div class="grid grid-3">
-      {% for item in section.extra.guarantees.items %}
-      <article class="card">
-        <h3 class="card-title">{{ item.title }}</h3>
-        <p class="card-body">{{ item.body }}</p>
-      </article>
-      {% endfor %}
-    </div>
   </div>
 </section>
 {% endblock content %}
