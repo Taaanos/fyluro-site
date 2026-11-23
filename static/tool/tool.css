@@ -1,72 +1,11 @@
-/* Fyluro-specific visual tokens and ephemeral accent switcher styles. */
+/* Fyluro-specific visual tokens and component styles. */
 
-/* Candidate accent palettes (ephemeral until one final color is chosen). */
-:root,
-:root[data-accent="forest"] {
+:root {
   --accent: light-dark(#2d6a4f, #52b788);
   --accent-hover: light-dark(#22543d, #74c69d);
   --accent-soft: light-dark(rgba(45, 106, 79, 0.12), rgba(82, 183, 136, 0.16));
   --accent-ink: light-dark(#ffffff, #0b1c14);
 }
-
-:root[data-accent="amber"] {
-  --accent: light-dark(#b45309, #f59e0b);
-  --accent-hover: light-dark(#92400e, #fbbf24);
-  --accent-soft: light-dark(rgba(180, 83, 9, 0.12), rgba(245, 158, 11, 0.16));
-  --accent-ink: light-dark(#ffffff, #1c1304);
-}
-
-:root[data-accent="terracotta"] {
-  --accent: light-dark(#b84a32, #e07a5f);
-  --accent-hover: light-dark(#993b26, #ea947d);
-  --accent-soft: light-dark(rgba(184, 74, 50, 0.12), rgba(224, 122, 95, 0.16));
-  --accent-ink: light-dark(#ffffff, #1f0e0a);
-}
-
-:root[data-accent="slate"] {
-  --accent: light-dark(#3b5b7c, #7da2c8);
-  --accent-hover: light-dark(#2d4762, #9bb9d8);
-  --accent-soft: light-dark(rgba(59, 91, 124, 0.12), rgba(125, 162, 200, 0.16));
-  --accent-ink: light-dark(#ffffff, #0c1621);
-}
-
-/* Ephemeral accent preview switcher (remove once final accent is picked). */
-
-.accent-preview-bar {
-  position: relative;
-  z-index: 2;
-  border-bottom: 1px solid var(--border);
-  background-color: var(--bg-subtle);
-  padding-block: var(--space-2);
-  font-size: var(--text-xs);
-}
-
-.accent-preview-inner {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-3);
-}
-
-.accent-preview-label {
-  color: var(--text-subtle);
-  font-weight: 500;
-}
-
-.accent-swatch {
-  width: 9px;
-  height: 9px;
-  border-radius: var(--radius-pill);
-  display: inline-block;
-  margin-right: 5px;
-  vertical-align: -1px;
-}
-
-.accent-swatch-forest { background-color: light-dark(#2d6a4f, #52b788); }
-.accent-swatch-amber { background-color: light-dark(#b45309, #f59e0b); }
-.accent-swatch-terracotta { background-color: light-dark(#b84a32, #e07a5f); }
-.accent-swatch-slate { background-color: light-dark(#3b5b7c, #7da2c8); }
 
 /* Fyluro animated mascot icon (idle eye blink + quiet tail breathe). */
 

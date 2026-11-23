@@ -1,23 +1,8 @@
 {% extends "shared/base.html" %}
 
-{% block head_extra %}
-<script>
-  try {
-    var a = localStorage.getItem("fyluro-accent-preview");
-    if (a === "forest" || a === "amber" || a === "terracotta" || a === "slate") {
-      document.documentElement.setAttribute("data-accent", a);
-    }
-  } catch (e) {}
-</script>
-{% endblock head_extra %}
-
 {% block background %}
   {% include "tool/background.html" %}
 {% endblock background %}
-
-{% block tool_bar %}
-  {% include "tool/accent-preview.html" %}
-{% endblock tool_bar %}
 
 {% block brand_mark %}{% endblock brand_mark %}
 
@@ -106,7 +91,6 @@
 {% block footer_note %}{{ section.extra.footer.note }}{% endblock footer_note %}
 
 {% block tool_scripts %}
-  <script src="/tool/accent-preview.js" defer></script>
   <script src="/tool/mycelium.js" defer></script>
   <script src="/tool/state-machine.js" defer></script>
 {% endblock tool_scripts %}
