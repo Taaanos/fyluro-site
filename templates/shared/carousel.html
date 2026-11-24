@@ -1,0 +1,226 @@
+{# Shared screenshot slide switcher with native <dialog> lightbox.
+   Expects:
+   - carousel_slides: array of { src, alt, caption, width?, height? }
+   - carousel_label (optional): accessible region label #}
+{% if carousel_slides and carousel_slides | length > 0 %}
+{% set _label = carousel_label | default(value="App screenshots") %}
+{% set _total = carousel_slides | length %}
+{% set _first = carousel_slides | first %}
+
+<div
+  class="carousel"
+  data-carousel
+  role="region"
+  aria-roledescription="carousel"
+  aria-label="{{ _label }}"
+>
+  <div
+    class="carousel-track"
+    data-carousel-track
+    tabindex="0"
+    aria-label="{{ _label }} slides"
+  >
+    {% for slide in carousel_slides %}
+    <figure
+      class="carousel-slide"
+      data-carousel-slide
+      data-slide-index="{{ loop.index0 }}"
+      data-slide-src="{{ slide.src }}"
+      data-slide-alt="{{ slide.alt }}"
+      data-slide-caption="{{ slide.caption }}"
+    >
+      <button
+        type="button"
+        class="carousel-zoom-trigger"
+        data-carousel-open="{{ loop.index0 }}"
+        aria-label="Zoom screenshot {{ loop.index }} of {{ _total }}: {{ slide.caption }}"
+      >
+        <img
+          class="carousel-image"
+          src="{{ slide.src }}"
+          alt="{{ slide.alt }}"
+          {% if slide.width %}width="{{ slide.width }}"{% endif %}
+          {% if slide.height %}height="{{ slide.height }}"{% endif %}
+          {% if loop.index0 == 0 %}loading="eager"{% else %}loading="lazy"{% endif %}
+          decoding="async"
+        />
+      </button>
+    </figure>
+    {% endfor %}
+  </div>
+
+  <div class="carousel-footer">
+    <div class="carousel-meta">
+      <p class="carousel-caption" data-carousel-caption aria-live="polite">
+        <span class="carousel-counter" data-carousel-counter>1 / {{ _total }}</span>
+        <span class="carousel-caption-sep" aria-hidden="true">·</span>
+        <span data-carousel-caption-text>{{ _first.caption }}</span>
+      </p>
+      <button
+        type="button"
+        class="carousel-zoom-btn"
+        data-carousel-zoom-current
+        aria-label="Open full-size screenshot"
+        title="Zoom screenshot"
+      >
+        <svg viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+          <path
+            d="M10 2.5h3.5V6M6 13.5H2.5V10M13.5 2.5 9.25 6.75M2.5 13.5l4.25-4.25"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span>Zoom</span>
+      </button>
+    </div>
+
+    {% if _total > 1 %}
+    <div class="carousel-controls">
+      <button
+        type="button"
+        class="carousel-nav-btn"
+        data-carousel-prev
+        aria-label="Previous screenshot"
+      >
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+          <path
+            d="M9.75 3.5 5.25 8l4.5 4.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
+      <div class="carousel-dots" role="group" aria-label="Choose a screenshot">
+        {% for slide in carousel_slides %}
+        <button
+          type="button"
+          class="carousel-dot"
+          data-carousel-dot="{{ loop.index0 }}"
+          aria-label="Show slide {{ loop.index }} of {{ _total }}: {{ slide.caption }}"
+          aria-current="{% if loop.index0 == 0 %}true{% else %}false{% endif %}"
+        ></button>
+        {% endfor %}
+      </div>
+
+      <button
+        type="button"
+        class="carousel-nav-btn"
+        data-carousel-next
+        aria-label="Next screenshot"
+      >
+        <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+          <path
+            d="M6.25 3.5 10.75 8l-4.5 4.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+    {% endif %}
+  </div>
+
+  <dialog
+    class="carousel-lightbox"
+    data-carousel-lightbox
+    aria-label="{{ _label }} full-size view"
+  >
+    <div class="carousel-lightbox-frame" data-carousel-lightbox-frame>
+      <div class="carousel-lightbox-header">
+        <p class="carousel-lightbox-title">
+          <span class="carousel-counter" data-lightbox-counter>1 / {{ _total }}</span>
+          <span class="carousel-caption-sep" aria-hidden="true">·</span>
+          <span data-lightbox-caption>{{ _first.caption }}</span>
+        </p>
+        <button
+          type="button"
+          class="carousel-lightbox-close"
+          data-lightbox-close
+          aria-label="Close full-size screenshot"
+        >
+          <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+            <path
+              d="M4 4l8 8M12 4l-8 8"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="carousel-lightbox-stage">
+        <img
+          class="carousel-lightbox-image"
+          data-lightbox-image
+          src="{{ _first.src }}"
+          alt="{{ _first.alt }}"
+        />
+      </div>
+
+      {% if _total > 1 %}
+      <div class="carousel-lightbox-controls">
+        <button
+          type="button"
+          class="carousel-nav-btn"
+          data-lightbox-prev
+          aria-label="Previous screenshot"
+        >
+          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+            <path
+              d="M9.75 3.5 5.25 8l4.5 4.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <div class="carousel-dots" role="group" aria-label="Choose a screenshot">
+          {% for slide in carousel_slides %}
+          <button
+            type="button"
+            class="carousel-dot"
+            data-lightbox-dot="{{ loop.index0 }}"
+            aria-label="Show slide {{ loop.index }} of {{ _total }}: {{ slide.caption }}"
+            aria-current="{% if loop.index0 == 0 %}true{% else %}false{% endif %}"
+          ></button>
+          {% endfor %}
+        </div>
+
+        <button
+          type="button"
+          class="carousel-nav-btn"
+          data-lightbox-next
+          aria-label="Next screenshot"
+        >
+          <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true">
+            <path
+              d="M6.25 3.5 10.75 8l-4.5 4.5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </dialog>
+</div>
+{% endif %}

@@ -79,7 +79,7 @@
   // Measure foreground cards and hero copy blocks so attractors favor visible open corridors.
   function collectObstacles(host) {
     const hostRect = host.getBoundingClientRect();
-    const selectors = [".hero-copy", ".app-screenshot", ".card", ".section-header h2"];
+    const selectors = [".hero-copy", ".app-screenshot", ".carousel", ".card", ".section-header h2"];
     const boxes = [];
 
     document.querySelectorAll(selectors.join(",")).forEach((node) => {
@@ -93,7 +93,7 @@
         right: r.right - hostRect.left + pad,
         bottom: r.bottom - hostRect.top + pad,
         isText,
-        isCard: node.matches(".card, .app-screenshot"),
+        isCard: node.matches(".card, .app-screenshot, .carousel"),
       });
     });
 

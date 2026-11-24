@@ -10,6 +10,37 @@ primary_cta_label = "Download on GitHub Releases"
 primary_cta_url = "https://github.com/taaanos/fyluro/releases"
 homebrew_command = "brew install --cask taaanos/tap/fyluro"
 
+[extra.hero_carousel]
+label = "Fyluro app screenshots"
+
+[[extra.hero_carousel.slides]]
+src = "/tool/screenshots/01-ready.png"
+caption = "Choose source"
+alt = "Fyluro app window ready to select a memory card or folder and copy to the Archive destination"
+width = 1344
+height = 1094
+
+[[extra.hero_carousel.slides]]
+src = "/tool/screenshots/02-scan-preview.png"
+caption = "Scan preview"
+alt = "Fyluro scan preview showing 89 photos, 11 videos, 11 sidecars, and one detected ILCE-7CM2 camera before import"
+width = 1344
+height = 1074
+
+[[extra.hero_carousel.slides]]
+src = "/tool/screenshots/03-importing.png"
+caption = "Live import"
+alt = "Fyluro copying 9 of 111 items to staging with a live copy throughput chart"
+width = 1344
+height = 1118
+
+[[extra.hero_carousel.slides]]
+src = "/tool/screenshots/04-import-complete.png"
+caption = "Import complete"
+alt = "Fyluro import complete window confirming all 111 files are verified in the library with copy and verify speed charts"
+width = 1344
+height = 1352
+
 [extra.guarantees]
 title = "Built for peace of mind"
 

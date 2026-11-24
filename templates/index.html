@@ -41,11 +41,9 @@
     </div>
 
     <div class="hero-media">
-      <img
-        class="app-screenshot"
-        src="/tool/app-screenshot.png"
-        alt="Fyluro macOS app window showing source card scan preview, detected cameras, and import action"
-      />
+      {% set carousel_slides = section.extra.hero_carousel.slides %}
+      {% set carousel_label = section.extra.hero_carousel.label %}
+      {% include "shared/carousel.html" %}
     </div>
   </div>
 </section>
