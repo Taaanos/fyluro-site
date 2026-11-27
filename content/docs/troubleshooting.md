@@ -1,6 +1,6 @@
 +++
 title = "Troubleshooting"
-description = "Diagnose and resolve card detection, permission, disk space, and verification errors."
+description = "Resolve Fyluro macOS sandbox permissions, card detection, read-only NTFS drives, disk space warnings, and SHA-256 verification errors."
 weight = 6
 +++
 

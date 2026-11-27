@@ -1,6 +1,6 @@
 +++
 title = "Film Mode"
-description = "Record original camera, film stock, and capture month for scanned film rolls."
+description = "Tag scanned film rolls on macOS with original camera, lens, film stock, ISO, and capture month in embedded EXIF metadata and dated folders."
 weight = 3
 +++
 

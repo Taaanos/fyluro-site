@@ -1,6 +1,6 @@
 +++
 title = "Import Workflow"
-description = "Select folders, review Scan Preview, track import phases, and inspect outcomes and receipts."
+description = "Select a camera card and destination, review Scan Preview, track the six verified import phases, and inspect PDF and NDJSON receipts."
 weight = 1
 +++
 

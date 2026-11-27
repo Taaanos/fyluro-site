@@ -1,6 +1,6 @@
 base_url = "https://fyluro.thanosam.com"
 title = "Fyluro"
-description = "Safe, verified media ingest for macOS."
+description = "Verified media ingest for macOS. Copy camera cards with SHA-256 read-back checks, dated folders, and receipts."
 compile_sass = false
 build_search_index = false
 
@@ -8,7 +8,33 @@ build_search_index = false
 tool_name = "Fyluro"
 accent = "forest"
 icon = "/tool/app-icon.png"
+og_image = "/tool/og-image.png"
+og_image_alt = "Fyluro — Verified media ingest for macOS"
 github_url = "https://github.com/taaanos/fyluro"
 hub_url = "https://thanosam.com"
 docs_url = "/docs/"
 docs_label = "Docs"
+
+[extra.author]
+name = "Thanos Amoutzias"
+url = "https://thanosam.com"
+
+[extra.software]
+category = "MultimediaApplication"
+operating_system = "macOS 13 or later (Apple silicon)"
+requirements = "Apple silicon Mac with macOS 13 (Ventura) or later"
+license_url = "https://www.gnu.org/licenses/gpl-3.0.en.html"
+download_url = "https://github.com/taaanos/fyluro/releases"
+screenshot = "/tool/screenshots/02-scan-preview.png"
+price = "0"
+price_currency = "USD"
+features = [
+  "Read-only source card access",
+  "Staging copy with F_NOCACHE SHA-256 read-back verification",
+  "Dated camera and media-type folder organization",
+  "Duplicate detection and non-destructive name collision suffixes",
+  "Append-only NDJSON receipts and PDF summaries",
+  "Film Mode EXIF metadata tagging for scanned film rolls",
+  "Zero network requests and zero telemetry",
+  "macOS app and companion CLI",
+]

@@ -1,6 +1,6 @@
 +++
 title = "Safety & Verification"
-description = "Non-negotiable safety rules, read-back verification mechanics, and pre-erasure checks."
+description = "Learn Fyluro's ten non-negotiable data safety rules, F_NOCACHE SHA-256 read-back verification, and the checklist before erasing a camera card."
 weight = 4
 +++
 

@@ -1,0 +1,147 @@
+{# Shared JSON-LD structured data driven by config.toml and page/section metadata. #}
+{% set site_root_url = get_url(path="/", trailing_slash=true) %}
+{% set site_name = config.extra.tool_name | default(value=config.title) %}
+{% if section and section.path == "/" %}
+  {% set page_desc = section.description | default(value=config.description) %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "name": {{ site_name | json_encode() | safe }},
+        "url": {{ site_root_url | json_encode() | safe }},
+        "description": {{ page_desc | json_encode() | safe }}
+      }{% if config.extra.software %},
+      {
+        "@type": "SoftwareApplication",
+        "name": {{ site_name | json_encode() | safe }},
+        "description": {{ page_desc | json_encode() | safe }},
+        "url": {{ site_root_url | json_encode() | safe }},
+        "applicationCategory": {{ config.extra.software.category | json_encode() | safe }},
+        "operatingSystem": {{ config.extra.software.operating_system | json_encode() | safe }},
+        {% if config.extra.software.requirements %}"softwareRequirements": {{ config.extra.software.requirements | json_encode() | safe }},{% endif %}
+        {% if config.extra.software.license_url %}"license": {{ config.extra.software.license_url | json_encode() | safe }},{% endif %}
+        {% if config.extra.software.download_url %}"downloadUrl": {{ config.extra.software.download_url | json_encode() | safe }},{% endif %}
+        {% if config.extra.github_url %}"codeRepository": {{ config.extra.github_url | json_encode() | safe }},{% endif %}
+        {% if config.extra.og_image %}"image": {{ get_url(path=config.extra.og_image) | json_encode() | safe }},{% endif %}
+        {% if config.extra.software.screenshot %}"screenshot": {{ get_url(path=config.extra.software.screenshot) | json_encode() | safe }},{% endif %}
+        {% if config.extra.software.features %}"featureList": {{ config.extra.software.features | json_encode() | safe }},{% endif %}
+        {% if config.extra.author %}"author": {
+          "@type": "Person",
+          "name": {{ config.extra.author.name | json_encode() | safe }},
+          "url": {{ config.extra.author.url | json_encode() | safe }}
+        },{% endif %}
+        "offers": {
+          "@type": "Offer",
+          "price": {{ config.extra.software.price | default(value="0") | json_encode() | safe }},
+          "priceCurrency": {{ config.extra.software.price_currency | default(value="USD") | json_encode() | safe }}
+        }
+      }{% endif %}
+    ]
+  }
+  </script>
+{% elif page %}
+  {% set page_desc = page.description | default(value=config.description) %}
+  {% set docs_index_url = get_url(path=config.extra.docs_url | default(value="/docs/"), trailing_slash=true) %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": {{ page.title | json_encode() | safe }},
+        "description": {{ page_desc | json_encode() | safe }},
+        "url": {{ page.permalink | json_encode() | safe }},
+        "inLanguage": "en",
+        {% if config.extra.author %}"author": {
+          "@type": "Person",
+          "name": {{ config.extra.author.name | json_encode() | safe }},
+          "url": {{ config.extra.author.url | json_encode() | safe }}
+        },{% endif %}
+        {% if config.extra.software %}"about": {
+          "@type": "SoftwareApplication",
+          "name": {{ site_name | json_encode() | safe }},
+          "url": {{ site_root_url | json_encode() | safe }}
+        },{% endif %}
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": {{ site_name | json_encode() | safe }},
+          "url": {{ site_root_url | json_encode() | safe }}
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {{ site_name | json_encode() | safe }},
+            "item": {{ site_root_url | json_encode() | safe }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ config.extra.docs_label | default(value="Docs") | json_encode() | safe }},
+            "item": {{ docs_index_url | json_encode() | safe }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": {{ page.title | json_encode() | safe }},
+            "item": {{ page.permalink | json_encode() | safe }}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+{% elif section %}
+  {% set section_desc = section.description | default(value=config.description) %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "headline": {{ section.title | json_encode() | safe }},
+        "description": {{ section_desc | json_encode() | safe }},
+        "url": {{ section.permalink | json_encode() | safe }},
+        "inLanguage": "en",
+        {% if config.extra.author %}"author": {
+          "@type": "Person",
+          "name": {{ config.extra.author.name | json_encode() | safe }},
+          "url": {{ config.extra.author.url | json_encode() | safe }}
+        },{% endif %}
+        {% if config.extra.software %}"about": {
+          "@type": "SoftwareApplication",
+          "name": {{ site_name | json_encode() | safe }},
+          "url": {{ site_root_url | json_encode() | safe }}
+        },{% endif %}
+        "isPartOf": {
+          "@type": "WebSite",
+          "name": {{ site_name | json_encode() | safe }},
+          "url": {{ site_root_url | json_encode() | safe }}
+        }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": {{ site_name | json_encode() | safe }},
+            "item": {{ site_root_url | json_encode() | safe }}
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": {{ section.title | json_encode() | safe }},
+            "item": {{ section.permalink | json_encode() | safe }}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+{% endif %}

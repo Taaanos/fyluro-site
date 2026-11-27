@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
-  <meta name="description" content="{{ config.description }}" />
+  {% include "shared/seo-head.html" %}
+  {% include "shared/seo-jsonld.html" %}
   {% if config.extra.icon %}
   <link rel="icon" type="image/png" href="{{ config.extra.icon }}" />
   {% endif %}

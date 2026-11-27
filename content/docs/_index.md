@@ -1,6 +1,6 @@
 +++
 title = "Quickstart"
-description = "Install Fyluro on macOS and run your first verified media import."
+description = "Install Fyluro on Apple silicon macOS via Homebrew or GitHub Releases, verify downloads, and run your first verified media import."
 template = "shared/docs-section.html"
 page_template = "shared/docs-page.html"
 sort_by = "weight"

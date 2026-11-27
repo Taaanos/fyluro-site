@@ -12,3 +12,5 @@ if [ "$(uname -s)" = "Linux" ]; then
 else
   zola build
 fi
+
+sh scripts/build-llms-full.sh public/llms-full.txt

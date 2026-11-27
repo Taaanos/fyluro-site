@@ -1,6 +1,9 @@
 +++
 title = "Fyluro"
-description = "Media ingest for macOS."
+description = "Copy photos, videos, audio, and sidecars from camera cards on macOS. Read-back SHA-256 verification, dated folders, receipts, and Film Mode."
+
+[extra]
+seo_title = "Fyluro — Verified Media Ingest for macOS"
 
 [extra.hero]
 headline = "Media ingest for macOS."
@@ -47,22 +50,32 @@ title = "Built for peace of mind"
 [[extra.guarantees.items]]
 title = "Your source card stays untouched"
 body = "Fyluro never modifies, renames, or deletes files on your camera card."
+link_url = "/docs/safety-and-verification/"
+link_label = "Read all 10 safety rules →"
 
 [[extra.guarantees.items]]
 title = "Your library is never overwritten"
 body = "Identical files are skipped as duplicates. Name collisions with different content get a sequence suffix (-1, -2)."
+link_url = "/docs/library-and-files/#duplicates-and-name-collisions"
+link_label = "Library & file rules →"
 
 [[extra.guarantees.items]]
 title = "Verified before it enters your library"
 body = "Fyluro copies every file to a temporary staging folder first. Each file passes a read-back checksum check before it moves into your library."
+link_url = "/docs/safety-and-verification/#how-verification-works"
+link_label = "How verification works →"
 
 [[extra.guarantees.items]]
 title = "Metadata and dates stay intact"
 body = "Embedded EXIF, video metadata, and filesystem dates stay unchanged."
+link_url = "/docs/film-mode/"
+link_label = "Film Mode for scanned film →"
 
 [[extra.guarantees.items]]
 title = "Every run leaves a receipt"
 body = "Every session writes an append-only receipt and a PDF summary. If a run stops early, staged files and the receipt stay on disk for inspection."
+link_url = "/docs/import-workflow/#inspect-the-receipt"
+link_label = "Inspect receipt format →"
 
 [extra.how_it_works]
 title = "How Fyluro works"
@@ -85,5 +98,4 @@ body = "Fyluro moves verified files into your chosen folder structure (such as d
 
 [extra.footer]
 note = "Fyluro — OSS media ingest for macOS."
-docs_label = "Docs (Coming soon)"
 +++

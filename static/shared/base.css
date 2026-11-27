@@ -679,6 +679,14 @@ pre {
   color: var(--text-muted);
 }
 
+.card-link {
+  margin-top: auto;
+  padding-top: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  width: fit-content;
+}
+
 /* Command / code block */
 
 .cmd-block {

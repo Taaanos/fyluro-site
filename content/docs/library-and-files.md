@@ -1,6 +1,6 @@
 +++
 title = "Library & File Rules"
-description = "Destination folder layout, library settings, duplicates, capture dates, sidecars, camera labels, and supported file types."
+description = "Configure dated library folders, duplicate handling, capture date rules, sidecar pairing, camera labels, and supported photo, RAW, video, and audio formats."
 weight = 2
 +++
 

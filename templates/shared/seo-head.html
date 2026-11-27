@@ -1,0 +1,55 @@
+{# Shared SEO, canonical, Open Graph, and Twitter Card meta tags. #}
+{% if page %}
+  {% set meta_title = page.extra.seo_title | default(value=page.title ~ " — " ~ config.title ~ " Docs") %}
+  {% set meta_description = page.description | default(value=config.description) %}
+  {% set og_type = "article" %}
+{% elif section %}
+  {% if section.extra.seo_title %}
+    {% set meta_title = section.extra.seo_title %}
+  {% elif section.path == "/" %}
+    {% set meta_title = config.title %}
+  {% else %}
+    {% set meta_title = section.title ~ " — " ~ config.title ~ " Docs" %}
+  {% endif %}
+  {% set meta_description = section.description | default(value=config.description) %}
+  {% if section.path == "/" %}
+    {% set og_type = "website" %}
+  {% else %}
+    {% set og_type = "article" %}
+  {% endif %}
+{% else %}
+  {% set meta_title = config.title %}
+  {% set meta_description = config.description %}
+  {% set og_type = "website" %}
+{% endif %}
+  <title>{{ meta_title }}</title>
+  <meta name="description" content="{{ meta_description }}" />
+  {% if current_url %}
+  <link rel="canonical" href="{{ current_url | safe }}" />
+  {% endif %}
+  <meta property="og:site_name" content="{{ config.extra.tool_name | default(value=config.title) }}" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:type" content="{{ og_type }}" />
+  <meta property="og:title" content="{{ meta_title }}" />
+  <meta property="og:description" content="{{ meta_description }}" />
+  {% if current_url %}
+  <meta property="og:url" content="{{ current_url | safe }}" />
+  {% endif %}
+  {% if config.extra.og_image %}
+    {% set og_image_url = get_url(path=config.extra.og_image) %}
+  <meta property="og:image" content="{{ og_image_url | safe }}" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+    {% if config.extra.og_image_alt %}
+  <meta property="og:image:alt" content="{{ config.extra.og_image_alt }}" />
+    {% endif %}
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="{{ og_image_url | safe }}" />
+    {% if config.extra.og_image_alt %}
+  <meta name="twitter:image:alt" content="{{ config.extra.og_image_alt }}" />
+    {% endif %}
+  {% else %}
+  <meta name="twitter:card" content="summary" />
+  {% endif %}
+  <meta name="twitter:title" content="{{ meta_title }}" />
+  <meta name="twitter:description" content="{{ meta_description }}" />

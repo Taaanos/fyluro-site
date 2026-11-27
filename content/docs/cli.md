@@ -1,6 +1,6 @@
 +++
 title = "CLI Reference"
-description = "Install and run the fyluro command-line tool for scripts and terminal workflows."
+description = "Install and run the fyluro CLI on macOS for scripted camera card imports, dry runs, JSON output, PDF receipts, and phase exit codes."
 weight = 5
 +++
 

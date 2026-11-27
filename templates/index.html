@@ -59,6 +59,9 @@
       <article class="card">
         <h3 class="card-title">{{ item.title }}</h3>
         <p class="card-body">{{ item.body }}</p>
+        {% if item.link_url %}
+        <a class="card-link" href="{{ item.link_url }}">{{ item.link_label }}</a>
+        {% endif %}
       </article>
       {% endfor %}
     </div>

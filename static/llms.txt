@@ -1,0 +1,32 @@
+# Fyluro
+
+> Safe, verified media ingest for macOS. Fyluro copies photos, videos, audio, and sidecars from camera cards to a dated library with SHA-256 read-back verification and receipts.
+
+Fyluro is an open-source (GPL-3.0) macOS app and companion CLI for Apple silicon Macs running macOS 13 (Ventura) or later. It makes no network requests and collects no telemetry.
+
+## Key Facts
+
+- Platform: Apple silicon Mac, macOS 13 (Ventura) or later.
+- Interfaces: Native macOS app (primary) and `fyluro` CLI (shares the same ingest engine).
+- Install (app): `brew install --cask taaanos/tap/fyluro`
+- Install (CLI): `brew install taaanos/tap/fyluro`
+- Releases: https://github.com/taaanos/fyluro/releases
+- Source code: https://github.com/taaanos/fyluro
+- License: GNU General Public License v3.0 (GPL-3.0).
+- Core guarantees: Source cards stay read-only. Existing library files are never overwritten. Every file copies to staging with `F_NOCACHE`, flushes with `F_FULLFSYNC`, and passes SHA-256 read-back verification before commit. Every run writes an append-only `.ndjson` receipt and a `.summary.pdf` receipt (in the app, or with `--pdf` in the CLI).
+
+## Documentation
+
+- [Quickstart](https://fyluro.thanosam.com/docs/): Install Fyluro with Homebrew or GitHub Releases, verify checksums and attestations, and run your first import.
+- [Import Workflow](https://fyluro.thanosam.com/docs/import-workflow/): Select source and destination folders, review Scan Preview, track the six import phases, and inspect outcomes and receipts.
+- [Library & File Rules](https://fyluro.thanosam.com/docs/library-and-files/): Destination folder structure, date and camera settings, duplicates and collision suffixes, capture date priority, sidecars, experimental camera labels, and supported formats.
+- [Film Mode](https://fyluro.thanosam.com/docs/film-mode/): Record original camera, lens, film stock, ISO, and capture month for scanned film rolls in embedded EXIF metadata and dated folders.
+- [Safety & Verification](https://fyluro.thanosam.com/docs/safety-and-verification/): Ten non-negotiable integrity guarantees, read-back verification mechanics, bitrot scope, and pre-erasure checklist.
+- [CLI Reference](https://fyluro.thanosam.com/docs/cli/): Command-line options, dry-run mode, JSON output, PDF summaries, phase exit codes, and differences from the macOS app.
+- [Troubleshooting](https://fyluro.thanosam.com/docs/troubleshooting/): Fix App Sandbox folder permissions, read-only NTFS drives, disk space warnings, interrupted runs, and hash mismatch errors.
+
+## Optional
+
+- [Full documentation (single file)](https://fyluro.thanosam.com/llms-full.txt): Plain-text Markdown combining all Fyluro user documentation pages.
+- [Product specification and invariants](https://github.com/taaanos/fyluro/blob/main/docs/ROL-6-spec-and-invariants.md): Canonical engineering spec and invariants (`I-1` to `I-10`).
+- [Author hub](https://thanosam.com): Related tools and writing by Thanos Amoutzias.
