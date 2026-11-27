@@ -1,12 +1,12 @@
 +++
-title = "Library, Settings & Files"
-description = "Folder structure, duplicates, sidecars, capture dates, app settings, and supported file types."
+title = "Library & File Rules"
+description = "Destination folder layout, library settings, duplicates, capture dates, sidecars, camera labels, and supported file types."
 weight = 2
 +++
 
-## Where your files go
+Fyluro files media by capture date, camera, and type without overwriting existing files in your library.
 
-The default layout:
+## Folder structure
 
 ```text
 <Destination>/
@@ -21,80 +21,65 @@ The default layout:
   _ingest_staging/      (only after a failed or stopped import)
 ```
 
-Audio has no camera folder. You can change the date folders, the camera folder and the `RAW` / `Non-RAW` split in [Settings](#settings).
+- **Camera folders:** Fyluro builds folder names from file metadata using lowercase letters, numbers, and dashes (`iPhone 15 Pro` becomes `iphone-15-pro`). Files without camera metadata go in `unknown-camera`. Raw device codes (such as `ac006`) stay as-is unless mapped in [Camera labels](#camera-labels-experimental).
+- **Audio:** Audio files go into `<date>/audio/` with no camera subfolder.
+- **Missing dates:** Files without a capture date go into `_unsorted/`.
+- **Filenames:** Source filenames stay unchanged except for collision suffixes.
 
-**Camera folders.** Fyluro makes the name from the camera model in the file metadata.
-The name has lowercase letters, numbers and dashes only. For example, `iPhone 15 Pro` becomes `iphone-15-pro`.
-A file without camera information goes in `unknown-camera`.
-Some cameras write a code, for example `ac006`. The folder then has that code. See [Camera Labels (experimental)](#camera-labels-experimental).
+## Library settings
 
-**File names.** Fyluro keeps the file name. A suffix is the only change.
+Open **Fyluro > Settings…** (or press `⌘,`) to configure the library layout.
 
-### Duplicates and renames
-
-Fyluro never overwrites a file in your library. When a file with the same folder and name exists:
-
-- **Same content.** The file is a duplicate. Fyluro does not copy it again.
-- **Different content.** Fyluro keeps both files. It adds `-1`, `-2` and so on to the new name, before the extension.
-
-Fyluro finds a duplicate only in the folder where the file would go.
-If you change the folder layout, Fyluro copies a card that you already imported again, to the new folders.
-
-### Sidecars
-
-A sidecar is a companion file, for example an `.XMP` or a `.THM` file.
-Fyluro copies and verifies it with its photo or video, and puts it in the same folder.
-A `.WAV` file with the same name as a video in the same folder is a sidecar of that video. Other `.WAV` files are audio.
-
-### Dates
-
-Fyluro reads the capture date in this order:
-
-- **Photos:** the date in the photo metadata, then the modified date of the file on the card.
-- **Videos:** the creation date in the video, then the date in a sidecar, then the modified date of the file.
-- **Audio:** the creation date in the audio file, then the modified date of the file.
-
-A date without a time zone uses the time zone of your Mac. A wrong camera clock gives a wrong folder date.
-Fyluro uses `_unsorted` in place of the year and month only when it finds no date at all. This is rare.
-
-Fyluro keeps the modified date of each file. It keeps the created date when the destination drive allows it.
-
-## Settings
-
-Click **Fyluro** in the menu bar, then **Settings…**. You can also press Command-comma.
-
-### Library
-
-| Setting | Default | What it does |
+| Setting | Default | Behavior |
 | --- | --- | --- |
-| **Date folders** | `2026/202603` | Other choices are `2026/03` and `2026`. |
-| **Group by camera** | On | Puts files in a folder for each camera. |
-| **Split photos into RAW / Non-RAW** | Off | Puts photos in a `RAW` folder or a `Non-RAW` folder. |
+| **Date folders** | `2026/202603` | Choose `2026/202603`, `2026/03`, or `2026`. |
+| **Group by camera** | On | Creates one subfolder per camera. |
+| **Split photos into RAW / Non-RAW** | Off | Splits photos into `RAW` and `Non-RAW` folders. |
 
-**Preview** shows sample paths for your choices. Click **Apply** to save them for the next import.
-**Reset to Default** sets the options back to the defaults. Click **Apply** to save them.
-A running import keeps the settings that it started with.
+> **Note:** Choose your layout before your first import. Changing settings never moves existing files or affects a running import. Re-importing a card after a layout change copies files into the new paths.
 
-Choose a layout before your first import, and keep it. Old folders stay as they are when you change it.
+## Duplicates and name collisions
 
-### Camera Labels (experimental)
+Fyluro never overwrites an existing file. It checks for an existing filename only in the target destination folder:
 
-Camera Labels gives a name to a camera code, so the folder reads `osmoaction6` and not `ac006`.
-This feature is experimental. It is off by default. Use it at your own risk.
+- **Same content (matching SHA-256):** Fyluro skips the file as a duplicate and does not copy it again.
+- **Different content:** Fyluro keeps both files and adds `-1`, `-2`, and so on before the extension.
 
-1. Turn on **Use camera labels (experimental)**.
-2. In **On the Current Card**, type a name next to a camera code. Press Return.
-3. To add a camera that is not on the card, type its code and a name in **Your Labels**. Click **Add**.
+## Capture dates
 
-- Fyluro saves each name at once. The trash icon removes a label.
-- Two codes can have the same name. They then share one folder. Fyluro shows `Same folder as …`.
-- A new label applies to the next import. Existing folders stay as they are.
-- The app stores labels inside its sandbox container at `~/Library/Containers/com.thanosam.fyluro/Data/Library/Application Support/Fyluro/CameraCatalog.json`.
-- When the switch is off, Fyluro ignores the labels. It does not delete them.
+| Media type | Date priority |
+| --- | --- |
+| **Photos** | 1. Film Mode (if enabled), 2. EXIF `DateTimeOriginal`, 3. EXIF `CreateDate`, 4. File modified date |
+| **Videos** | 1. Container `creation_time`, 2. Matched sidecar date, 3. File modified date |
+| **Audio** | 1. Container `creation_time`, 2. File modified date |
 
-## Supported files
+Dates without a time zone use your Mac's local time zone. A wrong camera clock produces a wrong folder date.
 
-Fyluro reads the file type from the end of the file name, without case.
+Fyluro preserves each file's modified date and, when the destination filesystem supports it, its created date.
+
+## Sidecars
+
+Sidecars (such as `.XMP`, `.THM`, or Sony `M01.XML`) pair with a photo or video in the same folder by basename. Fyluro copies, verifies, and places each sidecar next to its parent file.
+
+A `.WAV` file with the same basename as a video in the same folder imports as that video's sidecar. Other `.WAV` files import as standalone audio.
+
+## Camera labels (experimental)
+
+Camera labels map raw device codes (such as `ac006`) to readable folder names (such as `osmoaction6`).
+
+> **Caution:** This feature is experimental and off by default. New labels apply only to future imports; existing folders do not move.
+
+1. Open **Fyluro > Settings…** and turn on **Use camera labels (experimental)**.
+2. In **On the Current Card**, enter a name next to a code and press Return.
+3. To map an offline camera, enter its code and name in **Your Labels** and click **Add**.
+
+- Two codes with the same name share one folder (`Same folder as …`).
+- Labels save immediately to `~/Library/Containers/com.thanosam.fyluro/Data/Library/Application Support/Fyluro/CameraCatalog.json`.
+- Turning the switch off ignores labels without deleting them.
+
+## Supported file types
+
+Fyluro classifies files by trailing extension (case-insensitive):
 
 | Kind | File types |
 | --- | --- |
@@ -102,16 +87,12 @@ Fyluro reads the file type from the end of the file name, without case.
 | RAW photos | DNG, CR2, CR3, CRW, NEF, NRW, ARW, SR2, SRF, ORF, ORI, RAF, RW2, SRW, PEF, X3F, IIQ, GPR, MRW, 3FR, FFF, MOS, MEF, DCR, KDC, K25, ERF, RWL |
 | Videos | MOV, MP4, M4V, AVI, MPG, MPEG, MTS, M2TS, MXF, 3GP, 3G2, LRV, MKV, INSV, R3D, BRAW, CRM, ARI, CINE, TS, WEBM |
 | Audio | WAV, MP3, M4A, AAC, CAF, AIF, AIFF |
-| Sidecars | THM, XMP, AAE, XML, SRT, CPI, NKSC, DOP, PP3, JSON, and WAV next to a video with the same name |
+| Sidecars | THM, XMP, AAE, XML, SRT, CPI, NKSC, DOP, PP3, JSON, and paired WAV |
 
-Fyluro imports a sidecar only when it belongs to a photo or a video.
+### Skipped items
 
-Fyluro skips these items:
-
-- Hidden files and folders (names that start with a dot).
-- `System Volume Information`, `$RECYCLE.BIN` and `__MACOSX`.
-- Symbolic links. Fyluro never follows them.
-- Files of a type that is not in the table.
-
-**Scan Preview** shows a notice for a large file of an unknown type. A large file is 64 MiB or more.
-The notice shows only for files in `DCIM`, `PRIVATE`, `AVCHD`, `MP_ROOT`, `MISC`, `MOVIE` or `VIDEO`. It helps you find media from a new camera.
+- Hidden files and folders (names starting with `.`).
+- System folders (`System Volume Information`, `$RECYCLE.BIN`, `__MACOSX`).
+- Symbolic links (never followed).
+- Unmatched sidecars without a parent photo or video.
+- Unlisted extensions. **Scan Preview** flags unlisted files of 64 MiB or more in camera media folders (`DCIM`, `PRIVATE`, `AVCHD`, `MP_ROOT`, `MISC`, `MOVIE`, `VIDEO`).

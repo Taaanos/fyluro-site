@@ -1,34 +1,47 @@
 +++
 title = "CLI Reference"
-description = "Run the Fyluro ingest engine from the terminal for scripts and automation."
+description = "Install and run the fyluro command-line tool for scripts and terminal workflows."
 weight = 5
 +++
 
-The app is the main product. The `fyluro` CLI runs the same ingest engine for scripts and terminal use, and can offer fewer options than the app.
+The macOS app is the primary interface. The `fyluro` CLI runs the same verified ingest engine for terminal workflows and scripts.
 
-## Basic usage
+## Install
 
 ```bash
-fyluro --source /Volumes/SD --dest /Volumes/Media --dry-run
+brew install taaanos/tap/fyluro
 ```
 
-If you build from source in the `fyluro` repository, run it with `swift run fyluro`.
+You can also run the bundled binary inside the app (`/Applications/Fyluro.app/Contents/MacOS/fyluro`) or run `swift run fyluro` from a source checkout.
+
+## Usage
+
+```bash
+# Scan and plan only (writes a receipt, no library files)
+fyluro --source /Volumes/SD --dest /Volumes/Media --dry-run
+
+# Run a verified import with a PDF summary and JSON output
+fyluro --source /Volumes/SD --dest /Volumes/Media --pdf --json
+```
 
 ## Options
 
-| Option | Purpose |
-| --- | --- |
-| `--source <path>` | Source folder. If you omit it, Fyluro looks for a card in `/Volumes`. |
-| `--dest <path>` | Destination library. If you omit it, Fyluro reuses the last destination that has Fyluro receipts. |
-| `--dry-run` | Scan and plan only. Fyluro writes no library files. |
-| `--pdf` | Write a PDF summary next to the receipt. |
-| `--json` | Print the final summary as JSON. |
-| `--verbose` | Print diagnostic logs. |
-| `--max-parallel-copies <n>` | Number of files to copy in parallel (default 1). |
-| `--detect-timeout-seconds <n>` | Seconds to wait for a card when you omit `--source` (default 60, `0` waits without end). |
-| `--pick-source`, `--pick-dest` | Show a folder picker. |
+| Option | Default | Description |
+| --- | --- | --- |
+| `--source <path>` | Auto-detect in `/Volumes` | Source folder path. |
+| `--dest <path>` | Last remembered destination | Destination library path. |
+| `--dry-run` | Off | Scan and plan only. Writes a receipt and no library files. |
+| `--pdf` | Off | Write a `.summary.pdf` next to the NDJSON receipt. |
+| `--json` | Off | Print the final summary as JSON to stdout. |
+| `--verbose` | Off | Print diagnostic logs. |
+| `--max-parallel-copies <n>` | `1` | Parallel copy workers. Keep `1` for rotational HDDs. |
+| `--detect-timeout-seconds <n>` | `60` | Seconds to wait for a card when `--source` is omitted (`0` waits indefinitely). |
+| `--pick-source` | Off | Open a folder picker when `--source` is omitted. |
+| `--pick-dest` | Off | Open a folder picker when `--dest` is omitted. |
 
 ## Exit codes
+
+Exit codes `2` through `7` identify the pipeline phase that failed:
 
 | Code | Meaning |
 | --- | --- |
@@ -41,8 +54,8 @@ If you build from source in the `fyluro` repository, run it with `swift run fylu
 | `6` | Commit phase failed |
 | `7` | Finalize phase failed |
 
-The code from `2` to `7` shows the phase that failed.
+## Differences from the app
 
-## Camera Labels in the CLI
-
-The CLI always reads your Camera Labels file. The app has a setting for this feature. It is experimental and off by default.
+- **App-only features:** Film Mode and the Settings window exist only in the macOS app.
+- **Camera labels:** The CLI always reads `CameraCatalog.json` when present (no experimental toggle).
+- **PDF summary:** The app always writes a PDF summary; the CLI writes one only with `--pdf`.
