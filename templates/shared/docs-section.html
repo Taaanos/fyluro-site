@@ -1,0 +1,72 @@
+{% extends "shared/base.html" %}
+
+{% block title %}{{ section.title }} — {{ config.title }}{% endblock title %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="/shared/docs.css" />
+{% endblock head_extra %}
+
+{% block content %}
+<div class="docs-shell">
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <span class="docs-nav-heading">Documentation</span>
+    <nav class="docs-nav-list">
+      <a class="docs-nav-link" href="{{ section.permalink }}" aria-current="page">{{ section.title }}</a>
+      {% for p in section.pages %}
+        <a class="docs-nav-link" href="{{ p.permalink }}">{{ p.title }}</a>
+      {% endfor %}
+    </nav>
+  </aside>
+
+  <article class="docs-article">
+    <details class="docs-mobile-nav">
+      <summary>Documentation menu</summary>
+      <nav class="docs-mobile-nav-list" aria-label="Documentation navigation">
+        <a class="docs-nav-link" href="{{ section.permalink }}" aria-current="page">{{ section.title }}</a>
+        {% for p in section.pages %}
+          <a class="docs-nav-link" href="{{ p.permalink }}">{{ p.title }}</a>
+        {% endfor %}
+      </nav>
+    </details>
+
+    <header class="docs-header">
+      <span class="docs-kicker">{{ config.extra.tool_name }} Docs</span>
+      <h1>{{ section.title }}</h1>
+    </header>
+
+    <div class="docs-prose">
+      {{ section.content | safe }}
+    </div>
+
+    {% set first_page = section.pages | first %}
+    {% if first_page %}
+    <nav class="docs-pager" aria-label="Documentation pages">
+      <a class="docs-pager-link docs-pager-next" href="{{ first_page.permalink }}">
+        <span class="docs-pager-dir">Next →</span>
+        <span class="docs-pager-title">{{ first_page.title }}</span>
+      </a>
+    </nav>
+    {% endif %}
+  </article>
+
+  {% if section.toc %}
+  <aside class="docs-toc" aria-label="On this page">
+    <span class="docs-toc-heading">On this page</span>
+    <ul class="docs-toc-list">
+      {% for h2 in section.toc %}
+      <li>
+        <a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
+        {% if h2.children %}
+        <ul class="docs-toc-sublist">
+          {% for h3 in h2.children %}
+          <li><a href="{{ h3.permalink | safe }}">{{ h3.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+</div>
+{% endblock content %}

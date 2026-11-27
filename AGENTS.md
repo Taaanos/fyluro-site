@@ -2,6 +2,7 @@
 
 Working rules for `fyluro-site`.
 Fyluro product facts come from `../fyluro/docs/ROL-6-spec-and-invariants.md`.
+User-facing Fyluro documentation lives in `content/docs/` here and is linked from `../fyluro/README.md`.
 Never invent product behavior or features.
 
 ## Goals of This Repository

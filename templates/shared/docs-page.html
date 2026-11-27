@@ -1,0 +1,99 @@
+{% extends "shared/base.html" %}
+
+{% block title %}{{ page.title }} — {{ config.title }}{% endblock title %}
+
+{% block head_extra %}
+  <link rel="stylesheet" href="/shared/docs.css" />
+{% endblock head_extra %}
+
+{% block content %}
+{% set docs_section = get_section(path="docs/_index.md") %}
+
+<div class="docs-shell">
+  <aside class="docs-sidebar" aria-label="Documentation navigation">
+    <span class="docs-nav-heading">Documentation</span>
+    <nav class="docs-nav-list">
+      <a class="docs-nav-link" href="{{ docs_section.permalink }}">{{ docs_section.title }}</a>
+      {% for p in docs_section.pages %}
+        <a class="docs-nav-link" href="{{ p.permalink }}"{% if p.permalink == page.permalink %} aria-current="page"{% endif %}>{{ p.title }}</a>
+      {% endfor %}
+    </nav>
+  </aside>
+
+  <article class="docs-article">
+    <details class="docs-mobile-nav">
+      <summary>Documentation menu</summary>
+      <nav class="docs-mobile-nav-list" aria-label="Documentation navigation">
+        <a class="docs-nav-link" href="{{ docs_section.permalink }}">{{ docs_section.title }}</a>
+        {% for p in docs_section.pages %}
+          <a class="docs-nav-link" href="{{ p.permalink }}"{% if p.permalink == page.permalink %} aria-current="page"{% endif %}>{{ p.title }}</a>
+        {% endfor %}
+      </nav>
+    </details>
+
+    <header class="docs-header">
+      <span class="docs-kicker">{{ config.extra.tool_name }} Docs</span>
+      <h1>{{ page.title }}</h1>
+    </header>
+
+    <div class="docs-prose">
+      {{ page.content | safe }}
+    </div>
+
+    {% set_global prev_item = false %}
+    {% set_global next_item = false %}
+    {% set_global found_current = false %}
+    {% for p in docs_section.pages %}
+      {% if found_current and not next_item %}
+        {% set_global next_item = p %}
+      {% endif %}
+      {% if p.permalink == page.permalink %}
+        {% set_global found_current = true %}
+        {% if loop.first %}
+          {% set_global prev_item = docs_section %}
+        {% endif %}
+      {% endif %}
+      {% if not found_current %}
+        {% set_global prev_item = p %}
+      {% endif %}
+    {% endfor %}
+
+    {% if prev_item or next_item %}
+    <nav class="docs-pager" aria-label="Documentation pages">
+      {% if prev_item %}
+      <a class="docs-pager-link" href="{{ prev_item.permalink }}">
+        <span class="docs-pager-dir">← Previous</span>
+        <span class="docs-pager-title">{{ prev_item.title }}</span>
+      </a>
+      {% endif %}
+      {% if next_item %}
+      <a class="docs-pager-link docs-pager-next" href="{{ next_item.permalink }}">
+        <span class="docs-pager-dir">Next →</span>
+        <span class="docs-pager-title">{{ next_item.title }}</span>
+      </a>
+      {% endif %}
+    </nav>
+    {% endif %}
+  </article>
+
+  {% if page.toc %}
+  <aside class="docs-toc" aria-label="On this page">
+    <span class="docs-toc-heading">On this page</span>
+    <ul class="docs-toc-list">
+      {% for h2 in page.toc %}
+      <li>
+        <a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
+        {% if h2.children %}
+        <ul class="docs-toc-sublist">
+          {% for h3 in h2.children %}
+          <li><a href="{{ h3.permalink | safe }}">{{ h3.title }}</a></li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </aside>
+  {% endif %}
+</div>
+{% endblock content %}
